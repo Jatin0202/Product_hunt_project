@@ -1,15 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home Page</title>
-</head>
-<body>
+
 {% extends 'base.html'   %}
 
 {% block content  %}
-HOME!
+{% for product in products.all %}
+
+<div class="row pd-3 pt-3">
+    <div class="col-2"  onclick="window.location='{%  url 'detail' product.id %}';" style="cursor: pointer;">
+        <img src="{{product.icon.url}}"  class="img-fluid" >
+    </div>
+    <div class="col-7" onclick="window.location='{%  url 'detail' product.id %}';" style="cursor: pointer;>
+        <a href="#"><h1>{{ product.title }}</h1></a>
+        <p>{{product.summary}}</p>
+    </div>
+    <div class="col-3">
+        <a href="javascript:{document.getElementById('upvote{{product.id}}').submit() }"><button class="btn btn-primary btn-large btn-block"><span class="oi oi-caret-top"></span>UpVote{{product.votes_total}}</button></a>
+    </div>
+</div>
+<br>
+
+
+<form id="upvote{{product.id}}" method="POST"  action="{% url 'upvote' product.id %}">
+    {% csrf_token%}
+    <input type="hidden">
+</form>
+{% endfor %}
 {% endblock%}
 
-</body>
-</html>
